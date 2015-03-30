@@ -1,9 +1,18 @@
+#include <algorithm>
+#include <cassert>
+#include <cstdint>
 #include <iostream>
 using std::cerr;
 using std::cout;
 
 #define SDL_MAIN_HANDLED
 #include <SDL/SDL.h>
+
+//======================================================================
+
+SDL_Texture * CreateSolidColorTexture (SDL_Renderer * renderer, int w, int h, uint32_t color);
+
+//======================================================================
 
 int main ()
 {
@@ -41,9 +50,13 @@ int main ()
 		return 3;
 	}
 
+	SDL_Texture * texture = CreateSolidColorTexture (renderer, 2, 2, 0x0000FFFF);
+
+	SDL_SetRenderDrawColor (renderer, 5, 5, 20, 255);
+
 	/* Into the event loop we go... */
 	SDL_Event ev;
-	while (true)
+	for (;;)
 	{
 		int poll_res = SDL_PollEvent(&ev);
 
@@ -56,12 +69,45 @@ int main ()
 		}
 		else
 		{
+			SDL_RenderClear (renderer);
+
 			// Do the render here...
+			SDL_Rect from {0, 0, 2, 2};
+			SDL_Rect to {10, 10, 20, 20};
+
+			SDL_RenderCopy (renderer, texture, &from, &to);
+
+			SDL_RenderPresent (renderer);
 		}
 	}
 	
+	SDL_DestroyTexture (texture);
 	SDL_DestroyRenderer (renderer);
 	SDL_DestroyWindow (window);
 	SDL_Quit ();
 	return 0;
 }
+
+//======================================================================
+
+SDL_Texture * CreateSolidColorTexture (SDL_Renderer * renderer, int w, int h, uint32_t color)
+{
+	uint32_t * pixels = new uint32_t [h * w];
+	std::fill (pixels, pixels + h * w, color);
+
+	SDL_Surface * surface = SDL_CreateRGBSurfaceFrom (pixels, w, h, 32, w * sizeof(*pixels), 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
+	if (nullptr == surface)
+	{
+		delete[] pixels;
+		return nullptr;
+	}
+
+	SDL_Texture * ret = SDL_CreateTextureFromSurface (renderer, surface);
+
+	SDL_FreeSurface (surface);
+	delete[] pixels;
+	return ret;
+}
+
+//----------------------------------------------------------------------
+//======================================================================
