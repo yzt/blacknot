@@ -9,6 +9,7 @@ project ("Blacknot" CXX)
 set (EXECUTABLE_OUTPUT_PATH $(PROJECT_BINARY_DIR)/bin)
 
 include_directories ("include" "dep/include")
+link_directories ("dep/lib/win")
 
 if (MSVC)
 	add_definitions (/W4)
@@ -37,5 +38,13 @@ add_executable ("blacknot_game"
 add_executable ("test_first"
 	"src/tests/test_first_main.cpp"
 )
+
+#-----------------------------------------------------------------------
+
+add_executable ("test_sdlblit"
+	"src/tests/test_sdlblit_main.cpp"
+)
+
+target_link_libraries ("test_sdlblit" "SDL2")
 
 #-----------------------------------------------------------------------
