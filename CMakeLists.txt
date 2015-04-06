@@ -21,11 +21,18 @@ endif ()
 #-----------------------------------------------------------------------
 
 set (BLACKNOT_HEADERS
+	"include/blacknot/common.hpp"
 	"include/blacknot/config.hpp"
+	"include/blacknot/configuration_file.hpp"
+	"include/blacknot/macros.hpp"
+	"include/blacknot/parsers.hpp"
+	"include/blacknot/types.hpp"
 )
 
 set (BLACKNOT_SOURCES
+	"src/blacknot/configuration_file.cpp"
 	"src/blacknot/main.cpp"
+	"src/blacknot/parsers.cpp"
 )
 
 add_executable ("blacknot_game"

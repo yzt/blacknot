@@ -2,20 +2,21 @@
 // This is part of Project Blacknot:
 //  https://github.com/yzt/blacknot
 //======================================================================
+#pragma once
+//======================================================================
 
-#include <blacknot/common.hpp>
-#include <blacknot/configuration_file.hpp>
+#include <blacknot/config.hpp>
+#include <blacknot/macros.hpp>
+#include <blacknot/types.hpp>
 
 //======================================================================
+
+namespace Blacknot {
+
 //======================================================================
 //----------------------------------------------------------------------
 //======================================================================
 
-int main (int /*argc*/, char * /*argv*/ [], char * /*envp*/ [])
-{
-	Blacknot::ConfigFile cfg ("config_test.txt");
-
-	return 0;
-}
+}	// namespace Blacknot
 
 //======================================================================
