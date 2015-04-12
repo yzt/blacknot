@@ -26,6 +26,7 @@ set (BLACKNOT_HEADERS
 	"include/blacknot/configuration_file.hpp"
 	"include/blacknot/macros.hpp"
 	"include/blacknot/parsers.hpp"
+	"include/blacknot/string_util.hpp"
 	"include/blacknot/types.hpp"
 )
 
@@ -33,6 +34,7 @@ set (BLACKNOT_SOURCES
 	"src/blacknot/configuration_file.cpp"
 	"src/blacknot/main.cpp"
 	"src/blacknot/parsers.cpp"
+	"src/blacknot/string_util.cpp"
 )
 
 add_executable ("blacknot_game"

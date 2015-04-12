@@ -76,6 +76,7 @@ private:
 	bool parseNameValuePair ();
 	bool parseName (char * buffer, unsigned & size);
 	bool parseValue (char * buffer, unsigned & size);
+	bool pushCharChecked (char ch, char * buffer, unsigned & in_out_size, unsigned max_size);
 
 private:
 	int m_line;

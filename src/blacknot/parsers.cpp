@@ -133,12 +133,16 @@ bool ConfigParser::parseSectionHeader ()
 	if (!IsNameStarter(curr()))
 		return false;
 
-	m_curr_section[0] = curr();
-	m_curr_section_size = 1;
+	m_curr_section_size = 0;
+	if (false == pushCharChecked(curr(), m_curr_section, m_curr_section_size, msc_MaxSectionNameSize))
+		return false;
 
 	while (popChar())
 		if (IsNameContinuer(curr()))
-			m_curr_section[m_curr_section_size++] = curr();
+		{
+			if (false == pushCharChecked(curr(), m_curr_section, m_curr_section_size, msc_MaxSectionNameSize))
+				return false;
+		}
 		else
 			break;
 
@@ -208,19 +212,22 @@ bool ConfigParser::parseNameValuePair ()
 
 bool ConfigParser::parseName (char * buffer, unsigned & size)
 {
-	buffer[0] = curr();
-	unsigned sz = 1;
+	size = 0;
+	if (false == pushCharChecked(curr(), buffer, size, msc_MaxNameSize))
+		return false;
 
 	while (popChar())
 	{
 		if (IsNameContinuer(curr()))
-			buffer[sz++] = curr();
+		{
+			if (false == pushCharChecked(curr(), buffer, size, msc_MaxNameSize))
+				return false;
+		}
 		else
 			break;
 	}
 
-	buffer[sz] = '\0';
-	size = sz;
+	buffer[size] = '\0';
 	return true;
 }
 
@@ -231,11 +238,14 @@ bool ConfigParser::parseValue (char * buffer, unsigned & size)
 	if (!popChar())
 		return false;
 
-	unsigned sz = 0;
+	size = 0;
 	bool escaped = false;
 
 	if (curr() != '\\')
-		buffer[sz++] = curr();
+	{
+		if (false == pushCharChecked(curr(), buffer, size, msc_MaxValueSize))
+			return false;
+	}
 	else
 		escaped = true;
 
@@ -245,13 +255,18 @@ bool ConfigParser::parseValue (char * buffer, unsigned & size)
 
 		if (escaped)
 		{
-			if (c == '\\') buffer[sz++] = '\\';
-			else if (c == '"') buffer[sz++] = '"';
+			char ec = '\0';
+
+			if (c == '\\') ec = '\\';
+			else if (c == '"') ec = '"';
 			else
 			{
 				error (Error::IllegalChar, m_line, m_column, m_byte);
 				return false;
 			}
+
+			if (false == pushCharChecked(ec, buffer, size, msc_MaxValueSize))
+				return false;
 			escaped = false;
 		}
 		else if (c == '\\')
@@ -259,19 +274,34 @@ bool ConfigParser::parseValue (char * buffer, unsigned & size)
 		else if (c == '"')
 			break;
 		else
-			buffer[sz++] = c;
+		{
+			if (false == pushCharChecked(c, buffer, size, msc_MaxValueSize))
+				return false;
+		}
 	}
 	
-	buffer[sz] = '\0';
-	size = sz;
+	buffer[size] = '\0';
 
-	if (eoi())
+	if ('"' != curr())
 	{
 		error (Error::DoubleQuoteExpected, m_line, m_column, m_byte);
 		return false;
 	}
 	popChar();
 	return true;
+}
+
+//----------------------------------------------------------------------
+// Assumes there is always one more byte available in the buffer for the terminating NUL
+bool ConfigParser::pushCharChecked (char ch, char * buffer, unsigned & in_out_size, unsigned max_size)
+{
+	if (in_out_size < max_size)
+	{
+		buffer[in_out_size++] = ch;
+		return true;
+	}
+	else
+		return error(Error::SizeViolation, m_line, m_column, m_byte);
 }
 
 //======================================================================
