@@ -4,29 +4,22 @@
 //======================================================================
 #pragma once
 //======================================================================
-//----------------------------------------------------------------------
-
-#define BKNT__STRINGIZE_DO(x)	#x
-#define BKNT_STRINGIZE(x)		BKNT__STRINGIZE_DO(x)
-
-//----------------------------------------------------------------------
-
-#define BKNT_PTR_VALID(ptr)				(nullptr != (ptr))
-
-//----------------------------------------------------------------------
-
-#if defined(_MSC_VER)
-	#define BKNT_REPORT(fmt, ...)	printf(fmt, __VA_ARGS__)
-#else
-	#define BKNT_REPORT(fmt, ...)	printf(fmt, ## __VA_ARGS__)
-#endif
-
 //======================================================================
 
 namespace Blacknot {
 
 //======================================================================
 //----------------------------------------------------------------------
+
+class Allocator
+{
+public:
+	virtual char const * name () const = 0;
+	virtual void * alloc (size_t size) = 0;
+	//virtual void * realloc (void * ptr, size_t size) = 0;
+	virtual void free (void * ptr, size_t size) = 0;
+};
+
 //======================================================================
 
 }	// namespace Blacknot

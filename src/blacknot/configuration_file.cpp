@@ -127,11 +127,16 @@ bool ConfigFile::newEntry (
 	char const * value, unsigned /*value_size*/
 )
 {
-	#define BKNT__DO_CONFIG_ENTRY_LOAD(s,e,t,v,f,st)	else if (0 == strcmp(BKNT_STRINGIZE(s), section) && 0 == strcmp(BKNT_STRINGIZE(e), name)) m_##s##_##e = FromString<t>(value);
+	#pragma warning (push)
+	#pragma warning (disable: 4127)	// Conditional expression is constant
 	if (false) {}
+	#pragma warning (pop)
+
+	#define BKNT__DO_CONFIG_ENTRY_LOAD(s,e,t,v,f,st)	else if (0 == strcmp(BKNT_STRINGIZE(s), section) && 0 == strcmp(BKNT_STRINGIZE(e), name)) m_##s##_##e = FromString<t>(value);
 	BKNT__DEF_CONFIG_ENTRIES(BKNT__DO_CONFIG_ENTRY_LOAD)
-	else BKNT_REPORT ("[WARNING] Unrecognized configuration entry: \"%s\":\"%s\"=\"%s\".\n", section, name, value);
 	#undef  BKNT__DO_CONFIG_ENTRY_LOAD
+
+	else BKNT_REPORT ("[WARNING] Unrecognized configuration entry: \"%s\":\"%s\"=\"%s\".\n", section, name, value);
 
 	return true;
 }

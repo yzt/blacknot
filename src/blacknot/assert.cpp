@@ -2,24 +2,8 @@
 // This is part of Project Blacknot:
 //  https://github.com/yzt/blacknot
 //======================================================================
-#pragma once
-//======================================================================
-//----------------------------------------------------------------------
 
-#define BKNT__STRINGIZE_DO(x)	#x
-#define BKNT_STRINGIZE(x)		BKNT__STRINGIZE_DO(x)
-
-//----------------------------------------------------------------------
-
-#define BKNT_PTR_VALID(ptr)				(nullptr != (ptr))
-
-//----------------------------------------------------------------------
-
-#if defined(_MSC_VER)
-	#define BKNT_REPORT(fmt, ...)	printf(fmt, __VA_ARGS__)
-#else
-	#define BKNT_REPORT(fmt, ...)	printf(fmt, ## __VA_ARGS__)
-#endif
+#include <blacknot/assert.hpp>
 
 //======================================================================
 

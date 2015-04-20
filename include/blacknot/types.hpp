@@ -6,7 +6,7 @@
 //======================================================================
 
 #include <blacknot/config.hpp>
-#include <blacknot/macros.hpp>
+#include <blacknot/assert.hpp>
 
 //======================================================================
 
@@ -42,7 +42,23 @@ BKNT_STATIC_ASSERT_SIZE (F32, 4);
 BKNT_STATIC_ASSERT_SIZE (F64, 8);
 
 //======================================================================
+
+template <typename T>
+inline T const & Min (T const & a, T const & b)
+{
+	if (b < a) return b;
+	else return a;
+}
+
 //----------------------------------------------------------------------
+
+template <typename T>
+inline T const & Max (T const & a, T const & b)
+{
+	if (b < a) return a;
+	else return b;
+}
+
 //======================================================================
 
 }	// namespace Blacknot
