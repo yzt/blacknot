@@ -22,6 +22,8 @@ endif ()
 
 set (BLACKNOT_HEADERS
 	"include/blacknot/allocator.hpp"
+	"include/blacknot/array.hpp"
+	"include/blacknot/array.inline.hpp"
 	"include/blacknot/assert.hpp"
 	"include/blacknot/common.hpp"
 	"include/blacknot/config.hpp"
@@ -35,7 +37,6 @@ set (BLACKNOT_HEADERS
 	"include/blacknot/string_util.hpp"
 	"include/blacknot/types.hpp"
 	"include/blacknot/util.hpp"
-	"include/blacknot/vector.hpp"
 )
 
 set (BLACKNOT_SOURCES

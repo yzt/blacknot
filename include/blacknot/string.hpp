@@ -5,8 +5,8 @@
 #pragma once
 //======================================================================
 
-#include <blacknot/config.hpp>
 #include <blacknot/types.hpp>
+#include <blacknot/assert.hpp>
 
 //======================================================================
 
@@ -22,6 +22,8 @@ public:
 	using MyType = CappedString<Capacity_>;
 	using SizeType = U16;
 	using CharType = char;
+	using Iterator = char *;
+	using ConstIterator = char const *;
 	static SizeType const Capacity = Capacity_;
 
 public:
@@ -58,9 +60,21 @@ public:
 	inline bool empty () const;
 	inline bool full () const;
 	
+	inline void clear ();
+
+	inline Iterator begin ();
+	inline ConstIterator begin () const;
+	inline ConstIterator cbegin () const;
+
+	inline Iterator end ();
+	inline ConstIterator end () const;
+	inline ConstIterator cend () const;
+
 private:
 	SizeType m_size = 0;
 	CharType m_chars [Capacity + 1];
+
+	BKNT_STATIC_ASSERT (Capacity_ > 0, "Capacity cannot be 0.");
 };
 
 //======================================================================
@@ -72,4 +86,5 @@ private:
 #define BKNT__STRING_DO_THE_IMPLEMENTATION
 #include <blacknot/string.inline.hpp>
 #undef  BKNT__STRING_DO_THE_IMPLEMENTATION
+
 //======================================================================

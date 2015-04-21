@@ -15,6 +15,14 @@
 
 //----------------------------------------------------------------------
 
+#define BKNT_PLACEMENT_NEW(ptr)			new (ptr)
+
+//----------------------------------------------------------------------
+
+#define BKNT_ALIGN_AS_TYPE(t)			alignas(alignof(t))
+
+//----------------------------------------------------------------------
+
 #if defined(_MSC_VER)
 	#define BKNT_REPORT(fmt, ...)	printf(fmt, __VA_ARGS__)
 #else

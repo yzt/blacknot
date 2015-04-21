@@ -9,7 +9,8 @@
 #endif
 //======================================================================
 
-#include <blacknot/config.hpp>
+#include <blacknot/string.hpp>
+
 #include <blacknot/assert.hpp>
 #include <blacknot/types.hpp>
 
@@ -246,7 +247,7 @@ inline auto CappedString<Capacity_>::c_str () const -> CharType const *
 template <U16 Capacity_>
 inline bool CappedString<Capacity_>::empty () const
 {
-	return m_size <= 0;
+	return m_size == 0;
 }
 
 //----------------------------------------------------------------------
@@ -255,6 +256,63 @@ template <U16 Capacity_>
 inline bool CappedString<Capacity_>::full () const
 {
 	return m_size >= Capacity_;
+}
+
+//----------------------------------------------------------------------
+
+template <U16 Capacity_>
+inline void CappedString<Capacity_>::clear ()
+{
+	m_size = 0;
+	m_chars[0] = '\0';
+}
+
+//----------------------------------------------------------------------
+
+template <U16 Capacity_>
+inline auto CappedString<Capacity_>::begin () -> Iterator
+{
+	return m_chars;
+}
+
+//----------------------------------------------------------------------
+
+template <U16 Capacity_>
+inline auto CappedString<Capacity_>::begin () const -> ConstIterator
+{
+	return m_chars;
+}
+
+//----------------------------------------------------------------------
+
+template <U16 Capacity_>
+inline auto CappedString<Capacity_>::cbegin () const -> ConstIterator
+{
+	return m_chars;
+}
+
+//----------------------------------------------------------------------
+
+template <U16 Capacity_>
+inline auto CappedString<Capacity_>::end () -> Iterator
+{
+	return m_chars + m_size;
+}
+
+//----------------------------------------------------------------------
+
+template <U16 Capacity_>
+inline auto CappedString<Capacity_>::end () const -> ConstIterator
+{
+	return m_chars + m_size;
+}
+
+//----------------------------------------------------------------------
+
+template <U16 Capacity_>
+inline auto CappedString<Capacity_>::cend () const -> ConstIterator
+{
+	return m_chars + m_size;
 }
 
 //----------------------------------------------------------------------
