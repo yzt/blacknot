@@ -2,13 +2,8 @@
 // This is part of Project Blacknot:
 //  https://github.com/yzt/blacknot
 //======================================================================
-#pragma once
-//======================================================================
 
-#include <blacknot/config.hpp>
-#include <blacknot/macros.hpp>
-#include <blacknot/types.hpp>
-#include <blacknot/assert.hpp>
+#include <blacknot/engine_common.hpp>
 
 //======================================================================
 

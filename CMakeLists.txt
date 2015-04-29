@@ -28,6 +28,8 @@ set (BLACKNOT_HEADERS
 	"include/blacknot/common.hpp"
 	"include/blacknot/config.hpp"
 	"include/blacknot/configuration_file.hpp"
+	"include/blacknot/engine.hpp"
+	"include/blacknot/engine_common.hpp"
 	"include/blacknot/gfx.hpp"
 	"include/blacknot/macros.hpp"
 	"include/blacknot/parsers.hpp"
@@ -43,11 +45,14 @@ set (BLACKNOT_SOURCES
 	"src/blacknot/allocator.cpp"
 	"src/blacknot/assert.cpp"
 	"src/blacknot/configuration_file.cpp"
+	"src/blacknot/engine.cpp"
+	"src/blacknot/engine_common.cpp"
 	"src/blacknot/gfx.cpp"
 	"src/blacknot/main.cpp"
 	"src/blacknot/parsers.cpp"
 	"src/blacknot/sdl_wrapper.cpp"
 	"src/blacknot/string_util.cpp"
+	"src/blacknot/types.cpp"
 	"src/blacknot/util.cpp"
 )
 

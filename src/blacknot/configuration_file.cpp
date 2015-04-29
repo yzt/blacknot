@@ -28,8 +28,6 @@ ConfigFile::ConfigFile (char const * file_name)
 
 	if (m_ok)
 		m_ok = parse ();
-	else
-		BKNT_REPORT ("[ERROR] File \"%s\" not found.\n", file_name);
 
 	if (BKNT_PTR_VALID(m_file))
 		fclose (m_file);

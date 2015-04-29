@@ -2,13 +2,8 @@
 // This is part of Project Blacknot:
 //  https://github.com/yzt/blacknot
 //======================================================================
-#pragma once
-//======================================================================
 
-#include <blacknot/config.hpp>
-#include <blacknot/macros.hpp>
-#include <blacknot/types.hpp>
-#include <blacknot/assert.hpp>
+#include <blacknot/engine.hpp>
 
 //======================================================================
 
@@ -16,6 +11,20 @@ namespace Blacknot {
 
 //======================================================================
 //----------------------------------------------------------------------
+
+Engine::Engine (ConfigFile & cfg, Allocator * allocator)
+	: m_allocator (allocator)
+	, m_cfg (cfg)
+{
+	BKNT_ASSERT_PTR_VALID (m_allocator, "No allocators?!");
+}
+
+//----------------------------------------------------------------------
+
+Engine::~Engine ()
+{
+}
+
 //======================================================================
 
 }	// namespace Blacknot

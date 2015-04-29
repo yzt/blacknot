@@ -5,14 +5,17 @@
 #pragma once
 //======================================================================
 
-#include <blacknot/config.hpp>
-#include <blacknot/macros.hpp>
-#include <blacknot/types.hpp>
-#include <blacknot/assert.hpp>
+#include <blacknot/common.hpp>
 
 //======================================================================
 
 namespace Blacknot {
+
+//======================================================================
+// Forward declarations:
+
+class Allocator;
+class ConfigFile;
 
 //======================================================================
 //----------------------------------------------------------------------

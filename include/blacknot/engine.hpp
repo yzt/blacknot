@@ -5,14 +5,28 @@
 #pragma once
 //======================================================================
 
-#include <blacknot/config.hpp>
-#include <blacknot/macros.hpp>
-#include <blacknot/types.hpp>
-#include <blacknot/assert.hpp>
+#include <blacknot/common.hpp>
+#include <blacknot/engine_common.hpp>
 
 //======================================================================
 
 namespace Blacknot {
+
+//======================================================================
+//----------------------------------------------------------------------
+
+class Engine
+	: NonMovableNonCopyable
+{
+public:
+	Engine (ConfigFile & cfg, Allocator * allocator);
+	~Engine ();
+
+private:
+	Allocator * m_allocator;
+
+	ConfigFile & m_cfg;
+};
 
 //======================================================================
 //----------------------------------------------------------------------

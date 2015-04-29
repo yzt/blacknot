@@ -6,7 +6,6 @@
 //======================================================================
 
 #include <blacknot/config.hpp>
-#include <blacknot/assert.hpp>
 
 //======================================================================
 
@@ -29,18 +28,6 @@ using F64 = double;
 using Byte = U8;
 
 //----------------------------------------------------------------------
-
-BKNT_STATIC_ASSERT_SIZE ( I8, 1);
-BKNT_STATIC_ASSERT_SIZE ( U8, 1);
-BKNT_STATIC_ASSERT_SIZE (I16, 2);
-BKNT_STATIC_ASSERT_SIZE (U16, 2);
-BKNT_STATIC_ASSERT_SIZE (I32, 4);
-BKNT_STATIC_ASSERT_SIZE (U32, 4);
-BKNT_STATIC_ASSERT_SIZE (I64, 8);
-BKNT_STATIC_ASSERT_SIZE (U64, 8);
-BKNT_STATIC_ASSERT_SIZE (F32, 4);
-BKNT_STATIC_ASSERT_SIZE (F64, 8);
-
 //======================================================================
 
 template <typename T>
@@ -59,6 +46,32 @@ inline T const & Max (T const & a, T const & b)
 	else return b;
 }
 
+//======================================================================
+
+struct NonCopyable
+{
+	NonCopyable () = default;
+	NonCopyable (NonCopyable const &) = delete;
+	NonCopyable & operator = (NonCopyable const &) = delete;
+};
+
+struct NonMovable
+{
+	NonMovable () = default;
+	NonMovable (NonMovable &&) = delete;
+	NonMovable & operator = (NonMovable &&) = delete;
+};
+
+struct NonMovableNonCopyable
+{
+	NonMovableNonCopyable () = default;
+	NonMovableNonCopyable (NonMovableNonCopyable const &) = delete;
+	NonMovableNonCopyable (NonMovableNonCopyable &&) = delete;
+	NonMovableNonCopyable & operator = (NonMovableNonCopyable const &) = delete;
+	NonMovableNonCopyable & operator = (NonMovableNonCopyable &&) = delete;
+};
+
+//----------------------------------------------------------------------
 //======================================================================
 
 }	// namespace Blacknot

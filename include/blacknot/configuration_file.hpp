@@ -13,11 +13,12 @@
 //======================================================================
 // section, entry, type, default value, format string, save_type
 #define BKNT__DEF_CONFIG_ENTRIES(action)							\
-	action (gfx,  fullscreen,     bool, false, "%d", int)			\
-	action (gfx,  res_horizontal, int,  1024,  "%d", int)			\
-	action (gfx,  res_vertical,   int,  768,   "%d", int)			\
-	action (gfx,  refresh_rate,   int,  60,    "%d", int)			\
-	action (game, difficulty,     int,  0,     "%d", int)			\
+	action (gfx,    fullscreen,     bool, false, "%d", int)			\
+	action (gfx,    res_horizontal, int,  1024,  "%d", int)			\
+	action (gfx,    res_vertical,   int,  768,   "%d", int)			\
+	action (gfx,    refresh_rate,   int,  60,    "%d", int)			\
+	action (game,   difficulty,     int,  0,     "%d", int)			\
+	action (engine, max_memory_mb,  int,  128,   "%d", int)			\
 	/**/
 
 //======================================================================
