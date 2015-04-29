@@ -26,6 +26,8 @@ struct TestClass
 
 int main (int /*argc*/, char * /*argv*/ [], char * /*envp*/ [])
 {
+	BKNT_ASSERT (0 == 0, "Hello %d, %d, %s.", 1, 2, "3");
+
 	Blacknot::ConfigFile cfg ("config_test.txt");
 
 	BKNT_REPORT ("  fullscreen: %s\n", cfg.gfx_fullscreen() ? "yes" : "no");

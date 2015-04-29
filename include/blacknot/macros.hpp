@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------
 
-#if defined(_MSC_VER)
+#if defined(BKNT_COMPILER_IS_VC)
 	#define BKNT_REPORT(fmt, ...)	printf(fmt, __VA_ARGS__)
 #else
 	#define BKNT_REPORT(fmt, ...)	printf(fmt, ## __VA_ARGS__)
