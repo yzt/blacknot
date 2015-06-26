@@ -37,6 +37,19 @@ public:
 	virtual void * alloc (SizeType size, AllocDebugParams const & dbg_params) = 0;
 	virtual void * realloc (void * ptr, SizeType old_size, SizeType new_size, AllocDebugParams const & dbg_params) = 0;
 	virtual void free (void * ptr, SizeType size, AllocDebugParams const & dbg_params) = 0;
+
+	// Convenience interface for dealing with non-PODS
+	template <typename T, typename... ArgTypes>
+	inline T * create (AllocDebugParams const & dbg_params, ArgTypes &&... args);
+
+	template <typename T>
+	inline void destroy (T * p, AllocDebugParams const & dbg_params);
+
+	template <typename T, typename... ArgTypes>
+	inline T * createArray (size_t n, AllocDebugParams const & dbg_params, ArgTypes &&... args);
+	
+	template <typename T>
+	inline void destroyArray (T * p, size_t n, AllocDebugParams const & dbg_params);
 };
 
 //======================================================================
@@ -157,5 +170,11 @@ private:
 //======================================================================
 
 }	// namespace Blacknot
+
+//======================================================================
+
+#define BKNT__ALLOCATOR_DO_THE_IMPLEMENTATION
+#include <blacknot/allocator.inline.hpp>
+#undef  BKNT__ALLOCATOR_DO_THE_IMPLEMENTATION
 
 //======================================================================

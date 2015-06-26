@@ -8,6 +8,9 @@
 #include <blacknot/engine.hpp>
 
 //======================================================================
+
+void TestAllocator (Blacknot::Allocator * alctr);
+
 //======================================================================
 //----------------------------------------------------------------------
 //======================================================================
@@ -27,21 +30,68 @@ int main (int /*argc*/, char * /*argv*/ [], char * /*envp*/ [])
 
 	/* Make the root allocator */
 	RootAllocator root_allocator (U64(cfg.engine_max_memory_mb()) * 1048576);
-
 	Engine engine (cfg, &root_allocator);
-	
 
-	DebuggingAllocator dbg_alloc {&root_allocator, 10000000};
-
-	auto p = dbg_alloc.alloc (1000, BKNT_DBG_ALLOC_PARAMS(0));
-	auto q = dbg_alloc.alloc (1300, BKNT_DBG_ALLOC_PARAMS(0));
-	auto r = dbg_alloc.alloc ( 800, BKNT_DBG_ALLOC_PARAMS(0));
-
-	dbg_alloc.free (q, 1300, BKNT_DBG_ALLOC_PARAMS(0));
-	dbg_alloc.free (p, 1000, BKNT_DBG_ALLOC_PARAMS(0));
-	dbg_alloc.free (r,  800, BKNT_DBG_ALLOC_PARAMS(0));
+	DebuggingAllocator dbg_allocator {&root_allocator, 10000000};
+	TestAllocator (&dbg_allocator);
 
 	return 0;
+}
+
+//======================================================================
+
+void TestAllocator (Blacknot::Allocator * alctr)
+{
+	struct TestType
+	{
+		TestType (int & foo, double bar) {BKNT_REPORT("TestType ctor for %d, %f...\n", foo, bar);}
+		TestType (TestType const &) {BKNT_REPORT("TestType copy-ctor...\n");}
+		~TestType () {BKNT_REPORT("TestType dtor.\n");}
+	};
+//*
+	struct ExperimentalType
+	{
+		char a;		// 0-1		 0-1
+		int b;		// 1-5		 4-8
+		char c;		// 5-6		 8-9
+		short d;	// 6-8		10-12
+		char e;		// 8-9		12-13
+		int f;		// 9-13		16-20
+		char g;		// 13-14	20-21
+		double h;	// 14-22	24-32
+	};
+/*/
+	struct ExperimentalType
+	{
+		double h;
+		int b;
+		int f;
+		short d;
+		char a;
+		char c;
+		char e;
+		char g;
+	};
+//*/
+	BKNT_REPORT ("%u, %u\n", unsigned(sizeof(TestType)), unsigned(sizeof(ExperimentalType)));
+
+	int foo1 = 42, foo2 = 105;
+	auto tt = alctr->create<TestType>(BKNT_DBG_ALLOC_PARAMS(0), foo1, -0.5);
+	alctr->destroy (tt, BKNT_DBG_ALLOC_PARAMS(0));
+
+	TestType ss {foo2, 3.14};
+
+	auto ss_a = alctr->createArray<TestType>(10, BKNT_DBG_ALLOC_PARAMS(0), ss);
+	alctr->destroyArray(ss_a, 10, BKNT_DBG_ALLOC_PARAMS(0));
+	//alctr->destroy(ss_a, BKNT_DBG_ALLOC_PARAMS(0));
+
+	auto p = alctr->alloc (1000, BKNT_DBG_ALLOC_PARAMS(0));
+	auto q = alctr->alloc (1300, BKNT_DBG_ALLOC_PARAMS(0));
+	auto r = alctr->alloc ( 800, BKNT_DBG_ALLOC_PARAMS(0));
+
+	alctr->free (q, 1300, BKNT_DBG_ALLOC_PARAMS(0));
+	alctr->free (p, 1000, BKNT_DBG_ALLOC_PARAMS(0));
+	alctr->free (r,  800, BKNT_DBG_ALLOC_PARAMS(0));
 }
 
 //======================================================================

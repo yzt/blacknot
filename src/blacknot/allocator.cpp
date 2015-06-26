@@ -331,9 +331,9 @@ void DebuggingAllocator::free (void * ptr, SizeType size, AllocDebugParams const
 	auto hdr = header (ptr);
 	auto ftr = footer (ptr, size);
 	
-	BKNT_ASSERT_STRONG (msc_SentinelValue == hdr->sentinel, "Buffer underflow, or invalid pointer passed to free().");
-	BKNT_ASSERT_STRONG (size == hdr->block_size, "Buffer size mismatch, expected size %llu, given %llu.", hdr->block_size, size);
-	BKNT_ASSERT_STRONG (msc_SentinelValue == ftr->sentinel, "Buffer overflow, or invalid pointer passed to free().");
+	BKNT_ASSERT_STRONG (msc_SentinelValue == hdr->sentinel, "Buffer underflow, or invalid pointer passed to free(). (from %s:%d(%d))", dbg_params.file, dbg_params.line, dbg_params.user_data);
+	BKNT_ASSERT_STRONG (size == hdr->block_size, "Buffer size mismatch, expected size %llu, given %llu. (from %s:%d(%d))", hdr->block_size, size, dbg_params.file, dbg_params.line, dbg_params.user_data);
+	BKNT_ASSERT_STRONG (msc_SentinelValue == ftr->sentinel, "Buffer overflow, or invalid pointer passed to free(). (from %s:%d(%d))", dbg_params.file, dbg_params.line, dbg_params.user_data);
 
 	if (BKNT_PTR_VALID(hdr->next))
 		hdr->next->prev = hdr->prev;

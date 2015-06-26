@@ -22,6 +22,7 @@ endif ()
 
 set (BLACKNOT_HEADERS
 	"include/blacknot/allocator.hpp"
+	"include/blacknot/allocator.inline.hpp"
 	"include/blacknot/array.hpp"
 	"include/blacknot/array.inline.hpp"
 	"include/blacknot/assert.hpp"
