@@ -6,6 +6,7 @@
 //======================================================================
 
 #include <blacknot/config.hpp>
+#include <blacknot/macros.hpp>
 
 //======================================================================
 
@@ -48,6 +49,22 @@ inline T const & Max (T const & a, T const & b)
 
 //======================================================================
 
+template <typename T>
+bool In (T const & /*v*/)
+{
+	return false;
+}
+
+//----------------------------------------------------------------------
+
+template <typename T, typename Type0, typename... TypesRest>
+bool In (T const & v, Type0 const & set_member_0, TypesRest const &... set_rest)
+{
+	return v == set_member_0 ? true : In(v, set_rest...);
+}
+
+//======================================================================
+
 struct NonCopyable
 {
 	NonCopyable () = default;
@@ -72,6 +89,17 @@ struct NonMovableNonCopyable
 };
 
 //----------------------------------------------------------------------
+//======================================================================
+
+struct Buffer
+{
+	Byte * data = nullptr;
+	I64 size = 0;
+
+	// Means has room for data!
+	bool valid () const {return BKNT_PTR_VALID(data) && size > 0;}
+};
+
 //======================================================================
 
 }	// namespace Blacknot

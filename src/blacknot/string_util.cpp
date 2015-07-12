@@ -20,7 +20,7 @@ template <> char const * FromString<char const *> (char const * s) {return s;}
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-
+// Explicit instantiations:
 template int FromString<int> (char const *);
 template bool FromString<bool> (char const *);
 template double FromString<double> (char const *);

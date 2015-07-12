@@ -239,7 +239,7 @@ inline auto CappedArray<Type_, Capacity_>::cend () const -> ConstIterator
 template <typename Type_, U16 Capacity_>
 inline auto CappedArray<Type_, Capacity_>::front () const -> ValueType const &
 {
-	BKNT_ASSERT (!empty(), "Array in empty!");
+	BKNT_ASSERT (!empty(), "Array is empty!");
 	return *data();
 }
 
@@ -248,7 +248,7 @@ inline auto CappedArray<Type_, Capacity_>::front () const -> ValueType const &
 template <typename Type_, U16 Capacity_>
 inline auto CappedArray<Type_, Capacity_>::front () -> ValueType &
 {
-	BKNT_ASSERT (!empty(), "Array in empty!");
+	BKNT_ASSERT (!empty(), "Array is empty!");
 	return *data();
 }
 
@@ -257,7 +257,7 @@ inline auto CappedArray<Type_, Capacity_>::front () -> ValueType &
 template <typename Type_, U16 Capacity_>
 inline auto CappedArray<Type_, Capacity_>::back () const -> ValueType const &
 {
-	BKNT_ASSERT (!empty(), "Array in empty!");
+	BKNT_ASSERT (!empty(), "Array is empty!");
 	return *(data() + m_size - 1);
 }
 
@@ -266,7 +266,7 @@ inline auto CappedArray<Type_, Capacity_>::back () const -> ValueType const &
 template <typename Type_, U16 Capacity_>
 inline auto CappedArray<Type_, Capacity_>::back () -> ValueType &
 {
-	BKNT_ASSERT (!empty(), "Array in empty!");
+	BKNT_ASSERT (!empty(), "Array is empty!");
 	return *(data() + m_size - 1);
 }
 

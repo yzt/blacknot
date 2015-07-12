@@ -32,8 +32,14 @@ int main (int /*argc*/, char * /*argv*/ [], char * /*envp*/ [])
 	RootAllocator root_allocator (U64(cfg.engine_max_memory_mb()) * 1048576);
 	Engine engine (cfg, &root_allocator);
 
-	DebuggingAllocator dbg_allocator {&root_allocator, 10000000};
-	TestAllocator (&dbg_allocator);
+	//DebuggingAllocator dbg_allocator {&root_allocator, 10000000};
+	//TestAllocator (&dbg_allocator);
+
+	BKNT_REPORT ("%d, %d, %d\n"
+		, int(Blacknot::In(0, 42, 0.0, 13))
+		, int(Blacknot::In(1, 42, 0.0, 13, 2, 3, 4, 5, 6, 7, 7, 7, 7))
+		, int(Blacknot::In(1, 42, 0.0, 0 == 0))
+	);
 
 	return 0;
 }
@@ -76,22 +82,22 @@ void TestAllocator (Blacknot::Allocator * alctr)
 	BKNT_REPORT ("%u, %u\n", unsigned(sizeof(TestType)), unsigned(sizeof(ExperimentalType)));
 
 	int foo1 = 42, foo2 = 105;
-	auto tt = alctr->create<TestType>(BKNT_DBG_ALLOC_PARAMS(0), foo1, -0.5);
-	alctr->destroy (tt, BKNT_DBG_ALLOC_PARAMS(0));
+	auto tt = alctr->create<TestType>(BKNT_DBGP(0), foo1, -0.5);
+	alctr->destroy (tt, BKNT_DBGP(0));
 
 	TestType ss {foo2, 3.14};
 
-	auto ss_a = alctr->createArray<TestType>(10, BKNT_DBG_ALLOC_PARAMS(0), ss);
-	alctr->destroyArray(ss_a, 10, BKNT_DBG_ALLOC_PARAMS(0));
+	auto ss_a = alctr->createArray<TestType>(10, BKNT_DBGP(0), ss);
+	alctr->destroyArray(ss_a, 10, BKNT_DBGP(0));
 	//alctr->destroy(ss_a, BKNT_DBG_ALLOC_PARAMS(0));
 
-	auto p = alctr->alloc (1000, BKNT_DBG_ALLOC_PARAMS(0));
-	auto q = alctr->alloc (1300, BKNT_DBG_ALLOC_PARAMS(0));
-	auto r = alctr->alloc ( 800, BKNT_DBG_ALLOC_PARAMS(0));
+	auto p = alctr->alloc (1000, BKNT_DBGP(0));
+	auto q = alctr->alloc (1300, BKNT_DBGP(0));
+	auto r = alctr->alloc ( 800, BKNT_DBGP(0));
 
-	alctr->free (q, 1300, BKNT_DBG_ALLOC_PARAMS(0));
-	alctr->free (p, 1000, BKNT_DBG_ALLOC_PARAMS(0));
-	alctr->free (r,  800, BKNT_DBG_ALLOC_PARAMS(0));
+	alctr->free (q, 1300, BKNT_DBGP(0));
+	alctr->free (p, 1000, BKNT_DBGP(0));
+	alctr->free (r,  800, BKNT_DBGP(0));
 }
 
 //======================================================================
