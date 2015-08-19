@@ -7,9 +7,14 @@
 #include <blacknot/configuration_file.hpp>
 #include <blacknot/engine.hpp>
 
+#include <blacknot/win32_memory.hpp>
+#include <thread>
+#include <chrono>
+
 //======================================================================
 
 void TestAllocator (Blacknot::Allocator * alctr);
+void TestVirtualMemoryStuff ();
 
 //======================================================================
 //----------------------------------------------------------------------
@@ -35,12 +40,11 @@ int main (int /*argc*/, char * /*argv*/ [], char * /*envp*/ [])
 	//DebuggingAllocator dbg_allocator {&root_allocator, 10000000};
 	//TestAllocator (&dbg_allocator);
 
-	BKNT_REPORT ("%d, %d, %d\n"
-		, int(Blacknot::In(0, 42, 0.0, 13))
-		, int(Blacknot::In(1, 42, 0.0, 13, 2, 3, 4, 5, 6, 7, 7, 7, 7))
-		, int(Blacknot::In(1, 42, 0.0, 0 == 0))
-	);
+	std::this_thread::sleep_for (std::chrono::seconds(10));
 
+	TestVirtualMemoryStuff ();
+
+	std::this_thread::sleep_for (std::chrono::seconds(10));
 	return 0;
 }
 
@@ -100,4 +104,29 @@ void TestAllocator (Blacknot::Allocator * alctr)
 	alctr->free (r,  800, BKNT_DBGP(0));
 }
 
+//----------------------------------------------------------------------
+
+void TestVirtualMemoryStuff ()
+{
+	using namespace Blacknot;
+
+	Platform::VirtualMemoryArea vma {700'000'000};
+	Byte * buffer = (Byte *)vma.memory();
+
+	std::this_thread::sleep_for (std::chrono::seconds(10));
+	vma.resize (500'000'000);
+
+	std::this_thread::sleep_for (std::chrono::seconds(10));
+	vma.resize (100'000'000);
+
+	std::this_thread::sleep_for (std::chrono::seconds(10));
+	vma.resize (300'000'000);
+
+	buffer[10] = 42;
+	buffer[4096] = 42;
+
+	std::this_thread::sleep_for (std::chrono::seconds(10));
+}
+
+//----------------------------------------------------------------------
 //======================================================================

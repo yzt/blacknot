@@ -46,6 +46,7 @@ set (BLACKNOT_HEADERS
 	"include/blacknot/string_util.hpp"
 	"include/blacknot/types.hpp"
 	"include/blacknot/util.hpp"
+	"include/blacknot/win32_memory.hpp"
 )
 
 set (BLACKNOT_SOURCES
@@ -67,6 +68,7 @@ set (BLACKNOT_SOURCES
 	"src/blacknot/string_util.cpp"
 	"src/blacknot/types.cpp"
 	"src/blacknot/util.cpp"
+	"src/blacknot/win32_memory.cpp"
 )
 
 add_executable ("blacknot_game"

@@ -5,12 +5,21 @@
 #pragma once
 //======================================================================
 
+#if defined(WIN32)
+	#define WIN32_LEAN_AND_MEAN
+	#define _WIN_VER				0x600
+
+	#define BKNT_OS_IS_WINDOWS		1
+#endif
+
+//======================================================================
+
 #if defined(_MSC_VER)
 	#define _CRT_SECURE_NO_WARNINGS
 	#pragma warning (disable: 4127)	// "conditional expression is constant"
 	#pragma warning (disable: 4324)	// "structure was padded due to __declspec(align())"
 
-	#define BKNT_COMPILER_IS_VC	1
+	#define BKNT_COMPILER_IS_VC		1
 #endif
 
 //======================================================================
