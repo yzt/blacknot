@@ -34,6 +34,7 @@ set (BLACKNOT_HEADERS
 	"include/blacknot/gfx.hpp"
 	"include/blacknot/image.hpp"
 	"include/blacknot/macros.hpp"
+	"include/blacknot/memory.hpp"
 	"include/blacknot/parsers.hpp"
 	"include/blacknot/resource.hpp"
 	"include/blacknot/resource_compiler.hpp"
@@ -46,7 +47,6 @@ set (BLACKNOT_HEADERS
 	"include/blacknot/string_util.hpp"
 	"include/blacknot/types.hpp"
 	"include/blacknot/util.hpp"
-	"include/blacknot/win32_memory.hpp"
 )
 
 set (BLACKNOT_SOURCES
@@ -58,6 +58,7 @@ set (BLACKNOT_SOURCES
 	"src/blacknot/gfx.cpp"
 	"src/blacknot/image.cpp"
 	"src/blacknot/main.cpp"
+	"src/blacknot/memory_win32.cpp"
 	"src/blacknot/parsers.cpp"
 	"src/blacknot/resource.cpp"
 	"src/blacknot/resource_compiler.cpp"
@@ -68,7 +69,6 @@ set (BLACKNOT_SOURCES
 	"src/blacknot/string_util.cpp"
 	"src/blacknot/types.cpp"
 	"src/blacknot/util.cpp"
-	"src/blacknot/win32_memory.cpp"
 )
 
 add_executable ("blacknot_game"

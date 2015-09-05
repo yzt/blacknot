@@ -39,7 +39,7 @@ public:
 	virtual void * realloc (void * ptr, SizeType old_size, SizeType new_size, AllocDebugParams const & dbg_params) = 0;
 	virtual void free (void * ptr, SizeType size, AllocDebugParams const & dbg_params) = 0;
 
-	// Convenience interface for dealing with non-PODS
+	// Convenience interface for dealing with non-PODs
 	template <typename T, typename... ArgTypes>
 	inline T * create (AllocDebugParams const & dbg_params, ArgTypes &&... args);
 

@@ -27,7 +27,7 @@ inline T * Allocator::create (AllocDebugParams const & dbg_params, ArgTypes &&..
 	if (BKNT_PTR_VALID(p))
 	{
 		try {
-			BKNT_PLACEMENT_NEW(p) T (std::forward<ArgTypes>(args)...);
+			BKNT_PLACEMENT_NEW(p, T, std::forward<ArgTypes>(args)...);
 		}
 		catch (...)
 		{
@@ -68,7 +68,7 @@ inline T * Allocator::createArray (size_t n, AllocDebugParams const & dbg_params
 		size_t i = 0;
 		try {
 			for (; i < n; ++i)
-				BKNT_PLACEMENT_NEW(p + i) T (std::forward<ArgTypes>(args)...);
+				BKNT_PLACEMENT_NEW(p + i, T, std::forward<ArgTypes>(args)...);
 		}
 		catch (...)
 		{

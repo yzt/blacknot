@@ -4,6 +4,9 @@
 //======================================================================
 #pragma once
 //======================================================================
+
+#define BKNT_CONSUME_ARG(x)		((void)x)
+
 //----------------------------------------------------------------------
 
 #define BKNT__STRINGIZE_DO(x)	#x
@@ -15,7 +18,11 @@
 
 //----------------------------------------------------------------------
 
-#define BKNT_PLACEMENT_NEW(ptr)			new (ptr)
+#if defined(BKNT_COMPILER_IS_VC)
+	#define BKNT_PLACEMENT_NEW(ptr, type, ...)	new (ptr) type (__VA_ARGS__)
+#else
+	#define BKNT_PLACEMENT_NEW(ptr, type, ...)	new (ptr) type ( ## __VA_ARGS__)
+#endif
 
 //----------------------------------------------------------------------
 

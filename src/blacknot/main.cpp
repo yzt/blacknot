@@ -7,7 +7,7 @@
 #include <blacknot/configuration_file.hpp>
 #include <blacknot/engine.hpp>
 
-#include <blacknot/win32_memory.hpp>
+#include <blacknot/memory.hpp>
 #include <thread>
 #include <chrono>
 

@@ -3,10 +3,11 @@
 //  https://github.com/yzt/blacknot
 //======================================================================
 
-#include <blacknot/win32_memory.hpp>
+#include <blacknot/memory.hpp>
 
 //======================================================================
 
+#include <cstring>		// memcpy()
 #include <Windows.h>
 
 //======================================================================
@@ -29,28 +30,66 @@ U32 VirtualMemoryArea::GetPageSize ()
 VirtualMemoryArea::VirtualMemoryArea (U64 reserve_size)
 {
 	U32 const page_size = GetPageSize();
-	// Not really needed when we use / and %...
-	//BKNT_ASSERT_STRONG ((page_size & (page_size - 1)) == 0, "Page size (%u) is not a power of two!", unsigned(page_size));
 	m_reserved_size = (reserve_size + page_size - 1) / page_size * page_size;
 	
 	m_memory = ::VirtualAlloc (nullptr, m_reserved_size, MEM_RESERVE, PAGE_NOACCESS);
-	BKNT_ASSERT_PTR_VALID (m_memory, "VirtualAlloc() for %llu bytes failed: %u."
-		, m_reserved_size, unsigned(::GetLastError())
-	);
+	BKNT_ASSERT_PTR_VALID (m_memory, "VirtualAlloc() for %llu bytes failed: %u.", m_reserved_size, unsigned(::GetLastError()));
+}
+
+//----------------------------------------------------------------------
+
+VirtualMemoryArea::VirtualMemoryArea (VirtualMemoryArea const & that)
+	: m_memory (nullptr)
+	, m_reserved_size (that.m_reserved_size)
+{
+	m_memory = ::VirtualAlloc (nullptr, m_reserved_size, MEM_RESERVE, PAGE_NOACCESS);
+	BKNT_ASSERT_PTR_VALID (m_memory, "VirtualAlloc() for %llu bytes failed: %u.", m_reserved_size, unsigned(::GetLastError()));
+
+	if (BKNT_PTR_VALID(m_memory))
+	{
+		resize (that.m_committed_size);
+		BKNT_ASSERT (m_committed_size == that.m_committed_size);
+		::memcpy (m_memory, that.m_memory, m_committed_size);
+	}
 }
 
 //----------------------------------------------------------------------
 
 VirtualMemoryArea::~VirtualMemoryArea ()
 {
-	::VirtualFree (m_memory, 0, MEM_RELEASE);
+	destroy ();
 }
+
+//----------------------------------------------------------------------
+
+//VirtualMemoryArea & VirtualMemoryArea::operator = (VirtualMemoryArea const & that)
+//{
+//	if (this != &that)
+//	{
+//		destroy ();
+//
+//		m_reserved_size = that.m_reserved_size;
+//
+//		m_memory = ::VirtualAlloc (nullptr, m_reserved_size, MEM_RESERVE, PAGE_NOACCESS);
+//		BKNT_ASSERT_PTR_VALID (m_memory, "VirtualAlloc() for %llu bytes failed: %u.", m_reserved_size, unsigned(::GetLastError()));
+//
+//		if (BKNT_PTR_VALID(m_memory))
+//		{
+//			resize (that.m_committed_size);
+//			BKNT_ASSERT (m_committed_size == that.m_committed_size);
+//			::memcpy (m_memory, that.m_memory, m_committed_size);
+//		}
+//	}
+//
+//	return *this;
+//}
 
 //----------------------------------------------------------------------
 
 U64 VirtualMemoryArea::resize (U64 new_commit_size)
 {
-	BKNT_ASSERT_PTR_VALID (m_memory);
+	if (!BKNT_PTR_VALID(m_memory))
+		return m_committed_size;
 
 	U32 const page_size = GetPageSize();
 
@@ -75,6 +114,16 @@ U64 VirtualMemoryArea::resize (U64 new_commit_size)
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
+
+void VirtualMemoryArea::destroy ()
+{
+	if (BKNT_PTR_VALID(m_memory))
+		::VirtualFree (m_memory, 0, MEM_RELEASE);
+	m_memory = nullptr;
+	m_reserved_size = 0;
+	m_committed_size = 0;
+}
+
 //======================================================================
 
 	}	// namespace Platform
